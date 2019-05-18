@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from database.db import session
 from database.project import Project
 
@@ -16,3 +16,15 @@ def test(project_id):
 
 	except NoResultFound:
 		return "no data"
+
+
+@api.route('/new', methods=['GET', 'POST'])
+def new_project():
+	
+	if request.method == 'GET':
+
+		return render_template('new.html')
+
+	elif request.method == 'POST':
+
+		return 'post process'
