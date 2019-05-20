@@ -1,21 +1,24 @@
 from flask import Blueprint, render_template, request
-from database.db import session
+
 from database.project import Project
 
-from sqlalchemy.orm.exc import NoResultFound
 
 api = Blueprint('api', __name__)
 
 @api.route('/test/<int:project_id>')
 def test(project_id):
 	
-	try:
-		data = session.query(Project).filter_by(id=project_id).one()
+	data = Project.get_by_id(project_id)
 
-		return data.name
+	return data.name
 
-	except NoResultFound:
-		return "no data"
+
+@api.route('/<project_name>')
+def view_project(project_name):
+
+	data = Project.get_by_name(project_name)
+
+	return render_template('view.html', project=data)
 
 
 @api.route('/new', methods=['GET', 'POST'])
