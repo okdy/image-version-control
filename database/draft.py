@@ -1,6 +1,11 @@
+from flask import abort
 from sqlalchemy import Column
+from database.db import session
+
 from sqlalchemy.types import Integer, String, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
+
+from sqlalchemy.orm.exc import NoResultFound
 
 Base = declarative_base()
 
@@ -15,3 +20,6 @@ class Draft(Base):
 	description = Column(String)
 	file = Column(String)
 	date = Column(TIMESTAMP)
+
+	def get_all_draft():
+		return session.query(Draft).all()
