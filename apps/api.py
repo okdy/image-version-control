@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request
 
 from database.project import Project
+from database.draft import Draft
 
 
 api = Blueprint('api', __name__)
@@ -16,9 +17,11 @@ def test(project_id):
 @api.route('/<project_name>')
 def view_project(project_name):
 
-	data = Project.get_by_name(project_name)
+	project = Project.get_by_name(project_name)
 
-	return render_template('view.html', project=data)
+	drafts = Draft.get_all_draft()
+
+	return render_template('view.html', project=project, drafts=drafts)
 
 
 @api.route('/new', methods=['GET', 'POST'])
