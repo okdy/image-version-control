@@ -1,10 +1,15 @@
 from flask import Blueprint, render_template, request
 
+from sqlalchemy import insert
+
 from database.project import Project
 from database.draft import Draft
 
+from forms.draft import DraftForm
+
 
 api = Blueprint('api', __name__)
+
 
 @api.route('/test/<int:project_id>')
 def test(project_id):
@@ -24,13 +29,21 @@ def view_project(project_name):
 	return render_template('view.html', project=project, drafts=drafts)
 
 
-@api.route('/new', methods=['GET', 'POST'])
-def new_project():
+@api.route('/<project_name>/new', methods=['GET', 'POST'])
+def new_project(project_name):
 	
 	if request.method == 'GET':
 
-		return render_template('new.html')
+		data = Project.get_by_name(project_name)
+
+		return render_template('new.html', data=data)
 
 	elif request.method == 'POST':
 
-		return 'post process'
+		form = DraftForm(request.form)
+
+		if form.validate():
+			return 'success'
+
+		else:
+			return 'fail'
