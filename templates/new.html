@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h1>시안등록</h1>
+
+<form action="" method="post">
+  <div class="form-group">
+    <label for="headings">소제목</label>
+    <input type="text" class="form-control" id="headings" aria-describedby="emailHelp" placeholder="소제목" name="headings">
+  </div>
+  <div class="form-group">
+    <label for="description">추가 의견</label>
+    <input type="text" class="form-control" id="description" placeholder="의견..." name="description">
+  </div>
+  <div class="form-group">
+    <label for="file">파일 등록</label>
+    <input type="file" class="form-control" id="file" name="file">
+  </div>
+  <input type="hidden" name="id" value="{{ data.id }}">
+  <button type="submit" class="btn btn-primary">시안 등록</button>
+</form>
+
+{% endblock %}
