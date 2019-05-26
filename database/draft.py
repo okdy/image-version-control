@@ -23,3 +23,15 @@ class Draft(Base):
 
 	def get_all_draft():
 		return session.query(Draft).all()
+
+	#project_id, draft_version headings, description, file
+	def add_draft(project_id, draft_version headings, description, file):
+		newDraft = Draft(
+			project_id=project_id,
+			draft_version=draft_version,
+			headings=headings,
+			description=description,
+			file=file
+		)
+		session.add(newDraft)
+		session.commit()
