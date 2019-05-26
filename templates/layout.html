@@ -30,7 +30,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">과제 형상관리</a>
+  <a class="navbar-brand" href="/">과제 형상관리</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
@@ -53,7 +53,7 @@
 		<h5>진행중인 프로젝트</h5>
 		<ul>
 		{% for project in projects %}
-			<li class="project-list"><a href="#">{{ project.name }}</a></li>
+			<li class="project-list"><a href="/{{ project.name }}">{{ project.name }}</a></li>
 		{% endfor %}
 		</ul>
 	</div>
