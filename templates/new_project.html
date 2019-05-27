@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h1>프로젝트 등록</h1>
+
+<form action="" method="post">
+  <div class="form-group">
+    <label for="name">프로젝트 제목</label>
+    <input type="text" class="form-control" id="name" aria-describedby="emailHelp" placeholder="소제목" name="name">
+  </div>
+  <div class="form-group">
+    <label for="description">의견</label>
+    <input type="text" class="form-control" id="description" placeholder="의견..." name="description">
+  </div>
+  <div class="form-group">
+    <label for="deadline">데드라인</label>
+    <input type="date" class="form-control" id="deadline" name="deadline">
+  </div>
+  <button type="submit" class="btn btn-primary">프로젝트 등록</button>
+</form>
+
+{% endblock %}
