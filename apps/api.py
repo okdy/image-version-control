@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 
 from sqlalchemy import insert
 
@@ -6,17 +6,35 @@ from database.project import Project
 from database.draft import Draft
 
 from forms.draft import DraftForm
+from forms.project import ProjectForm
 
 
 api = Blueprint('api', __name__)
 
 
-@api.route('/test/<int:project_id>')
-def test(project_id):
-	
-	data = Project.get_by_id(project_id)
+@api.route('/new', methods=['GET', 'POST'])
+def new_project():
 
-	return data.name
+	if request.method == 'GET':
+
+		return render_template('new_project.html')
+
+	elif request.method == 'POST':
+
+		form = ProjectForm(request.form)
+
+		if form.validate():
+			Project.add_project(
+				form.name.data,
+				form.description.data,
+				form.deadline.data
+			)
+			flash('success')
+			return redirect('/')
+
+		else:
+			flash('fail')
+			return redirect(url_for('api.new_project'))
 
 
 @api.route('/<project_name>')
@@ -30,7 +48,7 @@ def view_project(project_name):
 
 
 @api.route('/<project_name>/new', methods=['GET', 'POST'])
-def new_project(project_name):
+def new_draft(project_name):
 	
 	if request.method == 'GET':
 
