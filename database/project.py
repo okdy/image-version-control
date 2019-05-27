@@ -32,3 +32,12 @@ class Project(Base):
 
 		except NoResultFound:
 			return abort(404)
+
+	def add_project(name, description, deadline):
+		new_project = Project(
+			name=name,
+			description=description,
+			deadline=deadline
+		)
+		session.add(new_project)
+		session.commit()
