@@ -29,13 +29,20 @@
 </head>
 <body>
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <h2>{{ message }}</h2>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <a class="navbar-brand" href="/">과제 형상관리</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="#">과제 생성</a>
+        <a class="nav-link" href="/new">과제 생성</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">통계</a>
