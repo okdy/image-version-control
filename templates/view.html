@@ -7,8 +7,12 @@
 
 <h3>{{ project.description }}</h3>
 
+<a href="{{ url_for('api.new_draft', project_name=project.name) }}" class="btn btn-secondary">시안등록</a>
+
+<ul class="list-group list-group-flush">
 {% for draft in drafts %}
-<h3>{{ draft.headings }}</h3>
+  <li class="list-group-item"><a href="{{ url_for('api.view_draft', project_name=project.name, headings=draft.headings) }}">{{ draft.headings }}</a> <small class="description">{{ draft.description }}</small></li>
 {% endfor %}
+</ul>
 
 {% endblock %}
