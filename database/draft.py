@@ -21,8 +21,15 @@ class Draft(Base):
 	file = Column(String)
 	date = Column(TIMESTAMP)
 
-	def get_all_draft():
-		return session.query(Draft).all()
+	def get_by_id(id):
+		return session.query(Draft).filter_by(project_id=id).all()
+
+	def get_by_id_headings(id, headings):
+		try:
+			return session.query(Draft).filter_by(project_id=id, headings=headings).one()
+
+		except NoResultFound:
+			abort(404)
 
 	def add_draft(project_id, draft_version, headings, description, file):
 		new_draft = Draft(
