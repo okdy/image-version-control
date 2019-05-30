@@ -42,7 +42,7 @@ def view_project(project_name):
 
 	project = Project.get_by_name(project_name)
 
-	drafts = Draft.get_all_draft()
+	drafts = Draft.get_by_id(project.id)
 
 	return render_template('view.html', project=project, drafts=drafts)
 
@@ -60,8 +60,28 @@ def new_draft(project_name):
 
 		form = DraftForm(request.form)
 
+		#project_id, draft_version, headings, description, file
 		if form.validate():
-			return 'success'
+			Draft.add_draft(
+				form.id.data,
+				1,
+				form.headings.data,
+				form.description.data,
+				form.file.data
+			)
+			flash('success')
+			return redirect(url_for('api.view_project', project_name=project_name))
 
 		else:
-			return 'fail'
+			flash('fail')
+			return redirect(url_for('api.new_draft', project_name=project_name))
+
+
+@api.route('/<project_name>/<headings>')
+def view_draft(project_name, headings):
+
+	project = Project.get_by_name(project_name)
+
+	draft = Draft.get_by_id_headings(project.id, headings)
+
+	return render_template('view_draft.html', project=project, draft=draft)
