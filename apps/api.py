@@ -8,6 +8,8 @@ from database.draft import Draft
 from forms.draft import DraftForm
 from forms.project import ProjectForm
 
+from werkzeug import secure_filename
+
 
 api = Blueprint('api', __name__)
 
@@ -69,6 +71,8 @@ def new_draft(project_name):
 				form.description.data,
 				form.file.data
 			)
+			file = request.files['file']
+			file.save('uploads/' + secure_filename(file.filename))
 			flash('success')
 			return redirect(url_for('api.view_project', project_name=project_name))
 
