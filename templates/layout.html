@@ -54,9 +54,9 @@
         <a class="nav-link" href="#">통계</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="과제, 시안" aria-label="Search">
-      <button class="btn btn-secondary my-2 my-sm-0" type="submit">검색</button>
+    <form class="form-inline my-2 my-lg-0" method="get" onsubmit="return test();">
+      <input id="search" class="form-control mr-sm-2" type="search" placeholder="과제, 시안" aria-label="Search">
+      <button class="btn btn-secondary my-2 my-sm-0" type="submit">검색</a>
     </form>
   </div>
 </nav>
@@ -77,5 +77,13 @@
 	</div>
 </div>
 
+<script>
+function test()
+{
+	value = document.getElementById("search").value;
+	location.href = '/search/' + value;
+	return false;
+}
+</script>
 </body>
 </html>
