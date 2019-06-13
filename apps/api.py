@@ -89,3 +89,11 @@ def view_draft(project_name, headings):
 	draft = Draft.get_by_id_headings(project.id, headings)
 
 	return render_template('view_draft.html', project=project, draft=draft)
+
+
+@api.route('/search/<project_name>')
+def search_project(project_name):
+
+	project = Project.search(project_name)
+
+	return render_template('search.html', project=project)
