@@ -41,3 +41,12 @@ class Project(Base):
 		)
 		session.add(new_project)
 		session.commit()
+
+	def search(project_name):
+		try:
+			return session.query(Project).filter(
+				Project.name.like('%' + project_name +'%')
+			).one()
+
+		except NoResultFound:
+			return abort(404)
