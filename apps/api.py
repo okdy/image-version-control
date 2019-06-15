@@ -10,19 +10,19 @@ from forms.project import ProjectForm
 
 from werkzeug import secure_filename
 
+from flask.views import MethodView
 
 api = Blueprint('api', __name__)
 
 
-@api.route('/new', methods=['GET', 'POST'])
-def new_project():
+class NewProject(MethodView):
 
-	if request.method == 'GET':
+	html = 'new_project.html'
 
-		return render_template('new_project.html')
+	def get(self):
+		return render_template(self.html)
 
-	elif request.method == 'POST':
-
+	def post(self):
 		form = ProjectForm(request.form)
 
 		if form.validate():
@@ -36,30 +36,18 @@ def new_project():
 
 		else:
 			flash('fail')
-			return redirect(url_for('api.new_project'))
+			return redirect(url_for('api.new'))
 
 
-@api.route('/<project_name>')
-def view_project(project_name):
+class NewDraft(MethodView):
 
-	project = Project.get_by_name(project_name)
+	html = 'new.html'
 
-	drafts = Draft.get_by_id(project.id)
-
-	return render_template('view.html', project=project, drafts=drafts)
-
-
-@api.route('/<project_name>/new', methods=['GET', 'POST'])
-def new_draft(project_name):
-	
-	if request.method == 'GET':
-
+	def get(self, project_name):
 		data = Project.get_by_name(project_name)
+		return render_template(self.html, data=data)
 
-		return render_template('new.html', data=data)
-
-	elif request.method == 'POST':
-
+	def post(self, project_name):
 		form = DraftForm(request.form)
 
 		#project_id, draft_version, headings, description, file
@@ -79,6 +67,20 @@ def new_draft(project_name):
 		else:
 			flash('fail')
 			return redirect(url_for('api.new_draft', project_name=project_name))
+
+
+api.add_url_rule('/new', view_func=NewProject.as_view('new'))
+api.add_url_rule('/<project_name>/new', view_func=NewDraft.as_view('new_draft'))
+
+
+@api.route('/<project_name>')
+def view_project(project_name):
+
+	project = Project.get_by_name(project_name)
+
+	drafts = Draft.get_by_id(project.id)
+
+	return render_template('view.html', project=project, drafts=drafts)
 
 
 @api.route('/<project_name>/<headings>')
