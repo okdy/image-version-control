@@ -1,20 +1,20 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask.views import MethodView
+
+from werkzeug import secure_filename
 
 from sqlalchemy import insert
-
-from database.project import Project
 from database.draft import Draft
+from database.project import Project
 
 from forms.draft import DraftForm
 from forms.project import ProjectForm
 
-from werkzeug import secure_filename
-
-from flask.views import MethodView
 
 api = Blueprint('api', __name__)
 
 
+# /new
 class NewProject(MethodView):
 
 	html = 'new_project.html'
@@ -39,6 +39,7 @@ class NewProject(MethodView):
 			return redirect(url_for('api.new'))
 
 
+# /<project_name>/new
 class NewDraft(MethodView):
 
 	html = 'new.html'
@@ -69,15 +70,10 @@ class NewDraft(MethodView):
 			return redirect(url_for('api.new_draft', project_name=project_name))
 
 
-api.add_url_rule('/new', view_func=NewProject.as_view('new'))
-api.add_url_rule('/<project_name>/new', view_func=NewDraft.as_view('new_draft'))
-
-
 @api.route('/<project_name>')
 def view_project(project_name):
 
 	project = Project.get_by_name(project_name)
-
 	drafts = Draft.get_by_id(project.id)
 
 	return render_template('view.html', project=project, drafts=drafts)
@@ -87,7 +83,6 @@ def view_project(project_name):
 def view_draft(project_name, headings):
 
 	project = Project.get_by_name(project_name)
-
 	draft = Draft.get_by_id_headings(project.id, headings)
 
 	return render_template('view_draft.html', project=project, draft=draft)
@@ -99,3 +94,7 @@ def search_project(project_name):
 	project = Project.search(project_name)
 
 	return render_template('search.html', project=project)
+
+
+api.add_url_rule('/new', view_func=NewProject.as_view('new'))
+api.add_url_rule('/<project_name>/new', view_func=NewDraft.as_view('new_draft'))
