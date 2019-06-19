@@ -25,3 +25,16 @@ CREATE TABLE `draft` (
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB;
+
+
+-- Account table
+CREATE TABLE `account` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(10) NOT NULL,
+	`email` VARCHAR(50) NOT NULL,
+	`password` TEXT NOT NULL,
+	`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
