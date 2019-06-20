@@ -1,3 +1,10 @@
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <h2>{{ message }}</h2>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 <form action="{{ url_for('auth.new') }}" method="post">
 
 <input type="text" mexlength="10" name="name" placeholder="이름">
