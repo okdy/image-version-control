@@ -2,6 +2,7 @@
 -- Project table
 CREATE TABLE `project` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`user_id` INT(11) NOT NULL DEFAULT '0',
 	`name` VARCHAR(30) NOT NULL DEFAULT '0',
 	`description` VARCHAR(140) NOT NULL DEFAULT '0',
 	`start_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -15,6 +16,7 @@ ENGINE=InnoDB;
 -- Draft table
 CREATE TABLE `draft` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`user_id` INT(11) NOT NULL,
 	`project_id` INT(11) NOT NULL DEFAULT '0',
 	`draft_version` INT(11) NOT NULL DEFAULT '0',
 	`headings` TEXT NOT NULL DEFAULT '0',
