@@ -7,10 +7,13 @@ from database.draft import Draft
 
 from sqlalchemy.orm.exc import NoResultFound
 
+from apps.auth import login_required
+
 main = Blueprint('main', __name__)
 
 
 @main.route('/')
+@login_required
 def home():
 	projects = session.query(Project).order_by(desc(Project.id)).all()
 

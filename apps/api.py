@@ -10,6 +10,7 @@ from database.project import Project
 from forms.draft import DraftForm
 from forms.project import ProjectForm
 
+from apps.auth import login_required
 
 api = Blueprint('api', __name__)
 
@@ -18,6 +19,7 @@ api = Blueprint('api', __name__)
 class NewProject(MethodView):
 
 	html = 'new_project.html'
+	decorators = [login_required]
 
 	def get(self):
 		return render_template(self.html)
@@ -43,6 +45,7 @@ class NewProject(MethodView):
 class NewDraft(MethodView):
 
 	html = 'new.html'
+	decorators = [login_required]
 
 	def get(self, project_name):
 		data = Project.get_by_name(project_name)
@@ -71,6 +74,7 @@ class NewDraft(MethodView):
 
 
 @api.route('/<project_name>')
+@login_required
 def view_project(project_name):
 
 	project = Project.get_by_name(project_name)
@@ -80,6 +84,7 @@ def view_project(project_name):
 
 
 @api.route('/<project_name>/<headings>')
+@login_required
 def view_draft(project_name, headings):
 
 	project = Project.get_by_name(project_name)
@@ -89,6 +94,7 @@ def view_draft(project_name, headings):
 
 
 @api.route('/search/<project_name>')
+@login_required
 def search_project(project_name):
 
 	project = Project.search(project_name)
