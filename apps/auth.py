@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, flash, request
+from flask import redirect, url_for, session, g
 from flask.views import MethodView
 
 from functools import wraps
@@ -9,6 +10,8 @@ from database.account import Account
 
 from forms.auth import LoginForm, NewAccountForm
 
+from resources.flash import AUTH
+
 
 auth = Blueprint('auth', __name__)
 
@@ -17,8 +20,11 @@ auth = Blueprint('auth', __name__)
 def login_required(f):
 	@wraps(f)
 	def wrap(*args, **kwargs):
-		if 1:
-			return 'please login'
+		if 'logined' not in session:
+			flash(AUTH['PLEASE_LOGIN'])
+			return redirect(url_for('auth.login'))
+		else:
+			g.user = Account.get_data(session['user_id'])
 		return f(*args, **kwargs)
 
 	return wrap
@@ -36,15 +42,19 @@ class Login(MethodView):
 		form = LoginForm(request.form)
 
 		if form.validate():
-			a = Account.login(form.email.data, form.password.data)
+			user = Account.login(form.email.data, form.password.data)
 
-			if a is None:
-				return 'none user'
+			if user is None:
+				flash(AUTH['LOGIN_FAIL'])
+				return redirect(url_for('auth.login'))
+				
 			else:
-				return 'yes user'
+				session['logined'] = True
+				session['user_id'] = user.id
+				return redirect(url_for('main.home'))
 
 		else:
-			flash('fail')
+			flash(AUTH['LOGIN_FAIL'])
 			return redirect(url_for('auth.login'))
 
 
@@ -61,11 +71,10 @@ class New(MethodView):
 
 		if form.validate():
 			Account.new(form.name.data, form.email.data, form.password.data)
-			flash('success')
+			flash(AUTH['NEW_SUCCESS'])
 			return redirect(url_for('main.home'))
 
 		else:
-			flash('fail')
 			return redirect(url_for('auth.new'))
 
 
