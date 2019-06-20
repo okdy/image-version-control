@@ -20,6 +20,13 @@ class Account(Base):
 	password = Column(String)
 	date = Column(TIMESTAMP)
 
+	def get_data(id):
+		try:
+			return session.query(Account).filter_by(id=id).one()
+
+		except NoResultFound:
+			return abort(404)
+
 	def login(_email, _password):
 		try:
 			return session.query(Account).filter_by(email=_email, password=_password).one()
