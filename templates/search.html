@@ -1,1 +1,25 @@
-is there?
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+{% if not result %}
+<h1>검색결과가 없습니다</h1>
+{% else %}
+
+<h1>검색결과</h1>
+
+{% for row in result %}
+  
+
+  <h4>
+  	<a href="#">{{ row.name }}</a> - 
+  	<small><em>{{ row.description }}</em></small>
+  </h4>
+{% endfor %}
+
+{% endif %}
+
+
+
+{% endblock %}

@@ -31,6 +31,10 @@
 			font-style: oblique;
 			margin-left: 10px;
 		}
+
+		.name {
+			font-weight: bold;
+		}
 	</style>
 </head>
 <body>
@@ -43,7 +47,7 @@
   {% endif %}
 {% endwith %}
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-  <a class="navbar-brand" href="/">과제 형상관리</a>
+  <a class="navbar-brand" href="/">{{ g.user.name }}님의 과제 형상관리</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
