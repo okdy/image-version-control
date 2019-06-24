@@ -97,9 +97,9 @@ def view_draft(project_name, headings):
 @login_required
 def search_project(project_name):
 
-	project = Project.search(project_name)
+	result = Project.search(project_name)
 
-	return render_template('search.html', project=project)
+	return render_template('search.html', result=result)
 
 
 api.add_url_rule('/new', view_func=NewProject.as_view('new'))
